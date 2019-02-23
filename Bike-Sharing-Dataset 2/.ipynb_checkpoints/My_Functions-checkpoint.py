@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
+from pandas import DataFrame 
+from gplearn.genetic import SymbolicTransformer
 from scipy.stats import *
-
+random_seed = 1234
 ## Reading data 
 def read_data(input_path):
     raw_data = pd.read_csv(input_path, keep_default_na=True)
@@ -54,7 +56,7 @@ def fix_types(df):
 def Genetic_P(dataset,target):
     y = dataset[target]
     X=dataset.copy()
-    X=X.drop('left',axis=1)
+    X=X.drop(target,axis=1)
     function_set = ['add', 'sub', 'mul', 'div',
                 'sqrt', 'log', 'abs', 'neg', 'inv',
                 'max', 'min','sin',
@@ -65,8 +67,23 @@ def Genetic_P(dataset,target):
                          function_set=function_set,
                          parsimony_coefficient=0.0005,
                          max_samples=0.9, verbose=1,
-                         random_state=random, n_jobs=3)
+                         random_state=random_seed, n_jobs=3)
     gp_features = gp.fit_transform(X,y)
     print('Number of features created out of genetic programing: {}'.format(gp_features.shape))
     new_X = pd.concat([pd.DataFrame(gp_features),dataset],axis=1)
     return new_X
+
+## Creating a new variable that compares the value to the past 7 days 
+## the first 5 rows will be dropped if 'windspeed'is calculated and only 2 for the rest 
+def relative_values(dataset, columns):
+    dataset = dataset.copy()
+    max = {'temp':41,'atemp':50,'hum':100,'windspeed':67}
+    for i in columns:
+        true=dataset[i]*max[i]
+        avg7 = true.rolling(min_periods=1,window=24*7).mean().shift()
+        std7 = true.rolling(min_periods=1,window=24*7).std().shift()
+        name = 'relative_' + i 
+        dataset[name]= (true - avg7)/std7
+    dataset = dataset.replace([np.inf, -np.inf], np.nan).dropna()
+    return dataset 
+        
