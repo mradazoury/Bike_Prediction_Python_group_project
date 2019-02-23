@@ -49,3 +49,24 @@ def fix_types(df):
     for j in boolean:
         df[j]= df[j].astype('int')
     return df
+
+## Genetic programming function that will create new features
+def Genetic_P(dataset,target):
+    y = dataset[target]
+    X=dataset.copy()
+    X=X.drop('left',axis=1)
+    function_set = ['add', 'sub', 'mul', 'div',
+                'sqrt', 'log', 'abs', 'neg', 'inv',
+                'max', 'min','sin',
+                 'cos',
+                 'tan']
+    gp = SymbolicTransformer(generations=20, population_size=2000,
+                         hall_of_fame=100, n_components=15,
+                         function_set=function_set,
+                         parsimony_coefficient=0.0005,
+                         max_samples=0.9, verbose=1,
+                         random_state=random, n_jobs=3)
+    gp_features = gp.fit_transform(X,y)
+    print('Number of features created out of genetic programing: {}'.format(gp_features.shape))
+    new_X = pd.concat([pd.DataFrame(gp_features),dataset],axis=1)
+    return new_X
