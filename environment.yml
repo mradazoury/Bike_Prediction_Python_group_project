@@ -65,6 +65,7 @@ dependencies:
   - parso=0.3.2=py37_0
   - patsy=0.5.1=py37_0
   - pcre=8.42=h378b8a2_0
+  - pep8=1.7.1=py37_0
   - pexpect=4.6.0=py37_0
   - pickleshare=0.7.5=py37_0
   - pip=19.0.1=py37_0
