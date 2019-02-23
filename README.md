@@ -1,6 +1,7 @@
 # Python_group_project
 Washington DC Biking data 
 
+# Tasks
 
 Mrad:
   - genetic programming
@@ -15,4 +16,7 @@ Forqan:
 
 Unassigned:
   - Scale the coeff
-  
+
+# Libraries
+
+- 
