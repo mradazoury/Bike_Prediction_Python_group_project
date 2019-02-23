@@ -87,3 +87,23 @@ def relative_values(dataset, columns):
     dataset = dataset.replace([np.inf, -np.inf], np.nan).dropna()
     return dataset 
         
+def check_skewness(df, numerical_cols, p_threshold=0.75):
+    skewed_features = list()
+    for feature in numerical_cols:
+        data = df[feature].copy()
+        skewness = skew(data)
+        print("{} skewness p-value : {}".format(feature, skewness))
+
+        if abs(skewness > p_threshold):
+            print(feature)
+            print("SKEWED")
+            skewed_features.append(feature)
+            print("-------------\n")
+    print("\n------\n")
+    print("skewed_features:")
+    print(skewed_features)
+
+    plt.rcParams["figure.figsize"] = (10,5)
+    for i, feature in enumerate(skewed_features):
+        plt.hist(df[feature], bins='auto')
+        plt.title(feature)
