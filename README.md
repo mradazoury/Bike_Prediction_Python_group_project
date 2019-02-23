@@ -16,7 +16,7 @@ Hatem
 - Outliers
 - skewness and normaility
 
-Forqan:
+Furqan:
 
 - Model stacking for numerical models
 
