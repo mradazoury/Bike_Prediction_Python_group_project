@@ -12,7 +12,7 @@ Mrad:
 Hatem
 
 - Data exploration graphs polish
-- Add sunny days feature
+- Add sunny hours feature
 - Outliers
 - skewness and normaility
 
