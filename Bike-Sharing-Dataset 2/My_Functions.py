@@ -3,6 +3,10 @@ import numpy as np
 from pandas import DataFrame 
 from gplearn.genetic import SymbolicTransformer
 from scipy.stats import *
+from astral import Astral
+import datetime
+import matplotlib.pyplot as plt
+
 random_seed = 1234
 ## Reading data 
 def read_data(input_path):
@@ -107,3 +111,15 @@ def check_skewness(df, numerical_cols, p_threshold=0.75):
     for i, feature in enumerate(skewed_features):
         plt.hist(df[feature], bins='auto')
         plt.title(feature)
+
+# Preperation for isDaylight()
+city_name = 'Washington DC'
+a = Astral()
+a.solar_depression = 'civil'
+city = a[city_name]
+
+def isDaylight(row):
+    sun = city.sun(date=row['dteday'], local=True)
+    row['isDaylight'] = 1 if (x['hr'] < sun['sunset'].hour and row['hr'] > sun['sunrise'].hour) else 0
+    row['isNoon'] = 1 if x['hr'] == sun['noon'].hour else 0
+    return x
