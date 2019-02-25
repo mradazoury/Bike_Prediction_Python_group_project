@@ -3,6 +3,10 @@ import numpy as np
 from pandas import DataFrame 
 from gplearn.genetic import SymbolicTransformer
 from scipy.stats import *
+from astral import Astral
+import datetime
+import matplotlib.pyplot as plt
+
 random_seed = 1234
 ## Reading data 
 def read_data(input_path):
@@ -87,3 +91,35 @@ def relative_values(dataset, columns):
     dataset = dataset.replace([np.inf, -np.inf], np.nan).dropna()
     return dataset 
         
+def check_skewness(df, numerical_cols, p_threshold=0.75):
+    skewed_features = list()
+    for feature in numerical_cols:
+        data = df[feature].copy()
+        skewness = skew(data)
+        print("{} skewness p-value : {}".format(feature, skewness))
+
+        if abs(skewness > p_threshold):
+            print(feature)
+            print("SKEWED")
+            skewed_features.append(feature)
+            print("-------------\n")
+    print("\n------\n")
+    print("skewed_features:")
+    print(skewed_features)
+
+    plt.rcParams["figure.figsize"] = (10,5)
+    for i, feature in enumerate(skewed_features):
+        plt.hist(df[feature], bins='auto')
+        plt.title(feature)
+
+# Preperation for isDaylight()
+city_name = 'Washington DC'
+a = Astral()
+a.solar_depression = 'civil'
+city = a[city_name]
+
+def isDaylight(row):
+    sun = city.sun(date=row['dteday'], local=True)
+    row['isDaylight'] = 1 if (x['hr'] < sun['sunset'].hour and row['hr'] > sun['sunrise'].hour) else 0
+    row['isNoon'] = 1 if x['hr'] == sun['noon'].hour else 0
+    return x
