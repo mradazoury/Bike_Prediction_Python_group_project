@@ -29,6 +29,8 @@ Unassigned:
 - seaborn
 - gplearn
 - pep8
+- astral
+
 
 Note: You can find updated env file is in the repo
 
