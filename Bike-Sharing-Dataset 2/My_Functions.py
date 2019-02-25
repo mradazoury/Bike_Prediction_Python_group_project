@@ -120,6 +120,6 @@ city = a[city_name]
 
 def isDaylight(row):
     sun = city.sun(date=row['dteday'], local=True)
-    row['isDaylight'] = 1 if (x['hr'] < sun['sunset'].hour and row['hr'] > sun['sunrise'].hour) else 0
-    row['isNoon'] = 1 if x['hr'] == sun['noon'].hour else 0
-    return x
+    row['isDaylight'] = 1 if (row['hr'] < sun['sunset'].hour and row['hr'] > sun['sunrise'].hour) else 0
+    row['isNoon'] = 1 if row['hr'] == sun['noon'].hour else 0
+    return row
