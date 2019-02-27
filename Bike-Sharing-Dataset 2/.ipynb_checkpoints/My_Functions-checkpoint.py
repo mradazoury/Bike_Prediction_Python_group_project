@@ -74,7 +74,8 @@ def Genetic_P(dataset,target):
                          random_state=random_seed, n_jobs=3)
     gp_features = gp.fit_transform(X,y)
     print('Number of features created out of genetic programing: {}'.format(gp_features.shape))
-    new_X = pd.concat([pd.DataFrame(gp_features),dataset],axis=1)
+    new_X = pd.concat([pd.DataFrame(gp_features),dataset],axis=1,join='inner')
+    new_X = new_X.dropna()
     return new_X
 
 ## Creating a new variable that compares the value to the past 7 days 
@@ -120,6 +121,6 @@ city = a[city_name]
 
 def isDaylight(row):
     sun = city.sun(date=row['dteday'], local=True)
-    row['isDaylight'] = 1 if (x['hr'] < sun['sunset'].hour and row['hr'] > sun['sunrise'].hour) else 0
-    row['isNoon'] = 1 if x['hr'] == sun['noon'].hour else 0
-    return x
+    row['isDaylight'] = 1 if (row['hr'] < sun['sunset'].hour and row['hr'] > sun['sunrise'].hour) else 0
+    row['isNoon'] = 1 if row['hr'] == sun['noon'].hour else 0
+    return row
