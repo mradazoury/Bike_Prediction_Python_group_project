@@ -117,3 +117,9 @@ dmypy.json
 
 #vscode
 settings.json
+
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
