@@ -7,18 +7,21 @@ Washington DC Biking data
 Mrad:
 
 - genetic programming
-- relative temp
+- relative temp DONE
 
 Hatem
 
-- Data exploration graphs polish
-- Add sunny hours feature
-- Outliers
-- skewness and normaility
+- Data exploration graphs polish DONE
+- Add sunny hours feature DONE
+- Outliers (In Progress)
+- skewness and normaility DONE
+- Set up AWS
+- Feature Engineering / Datasets to merge
+- graph and add 2 features for hours vs weekeends
 
 Furqan:
 
-- Model stacking for numerical models
+- Model stacking for numerical models (In Progress)
 
 Unassigned:
 
