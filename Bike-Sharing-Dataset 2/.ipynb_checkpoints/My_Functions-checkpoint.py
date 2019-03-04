@@ -74,7 +74,9 @@ def Genetic_P(dataset,target):
                          random_state=random_seed, n_jobs=3)
     gp_features = gp.fit_transform(X,y)
     print('Number of features created out of genetic programing: {}'.format(gp_features.shape))
-    new_X = pd.concat([pd.DataFrame(gp_features),dataset],axis=1,join='inner')
+    n = pd.DataFrame(gp_features)
+    n =n.set_index(dataset.index.values)
+    new_X = pd.concat([dataset,n],axis=1)
     new_X = new_X.dropna()
     return new_X
 
