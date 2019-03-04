@@ -13,9 +13,7 @@ Hatem
 
 - Data exploration graphs polish DONE
 - Add sunny hours feature DONE
-- Outliers (In Progress)
 - skewness and normaility DONE
-- Set up AWS
 - Feature Engineering / Datasets to merge
 - graph and add 2 features for hours vs weekeends
 

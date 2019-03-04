@@ -125,4 +125,14 @@ def isDaylight(row):
     row['isNoon'] = 1 if row['hr'] == sun['noon'].hour else 0
     return row
 
+def isRushHour(row):
+    #weekend
+    # if row['weekday'] in [0, 6]:
+        # row['isRushHour'] = 1
+    #weekdays
+    if row['weekday'] in [0, 6]:
+        if row['hr'] in [6, 7, 8, 9, 16, 17, 18, 19]:
+            row['isRushHour'] = 1
+    return row
+
 
