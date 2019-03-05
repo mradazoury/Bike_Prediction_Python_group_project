@@ -138,3 +138,11 @@ def isRushHour(row):
     return row
 
 
+### This function will calculate the mean of the cnt of the previous 2 weeks during the same hour
+def mean_per_hour_2weeks(dataset):
+  a = [] 
+  for i in range(0,len(dataset)):
+    a.append(dataset[ (dataset['dteday']>= (dataset['dteday'].iloc[i] + datetime.timedelta(-14))) & ( dataset['dteday'] < (dataset['dteday'].iloc[i])) &( dataset['hr'] == dataset['hr'].iloc[i])]['cnt'].mean())
+  dataset['mean_per_hour']= a
+  dataset= dataset.dropna()
+  return dataset
