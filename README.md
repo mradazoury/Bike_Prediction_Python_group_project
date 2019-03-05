@@ -31,6 +31,7 @@ Unassigned:
 - gplearn
 - pep8
 - astral
+- plotly
 
 
 Note: You can find updated env file is in the repo
