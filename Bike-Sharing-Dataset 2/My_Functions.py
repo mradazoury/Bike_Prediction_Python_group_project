@@ -94,7 +94,7 @@ def relative_values(dataset, columns):
     dataset = dataset.replace([np.inf, -np.inf], np.nan).dropna()
     return dataset 
         
-def check_skewness(df, numerical_cols, p_threshold=0.75):
+def check_skewness(df, numerical_cols, p_threshold=(0.75)):
     skewed_features = list()
     for feature in numerical_cols:
         data = df[feature].copy()
@@ -147,8 +147,8 @@ def addRushHourFlags(row):
     return row
 
 
-### This function will calculate the mean of the cnt of the previous 2 weeks during the same hour ( it is dropping 1 day per dataset)
-def mean_per_hour_2weeks(dataset):
+### This function will calculate the mean of the cnt of the previous 2 weeks during the same hour
+def mean_per_hour_3weeks(dataset):
     a = [] 
     for i in range(0,len(dataset)):
         a.append(dataset[ (dataset['dteday']>= (dataset['dteday'].iloc[i] + datetime.timedelta(-21))) & ( dataset['dteday'] < (dataset['dteday'].iloc[i])) &( dataset['hr']  == dataset['hr'].iloc[i])]['cnt'].mean())
