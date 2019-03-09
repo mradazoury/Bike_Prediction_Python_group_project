@@ -58,9 +58,12 @@ def fix_types(df):
 
 ## Genetic programming function that will create new features
 def Genetic_P(dataset,target):
+    append = 'mean_per_hour'
+    a = dataset[append]
     y = dataset[target]
     X=dataset.copy()
     X=X.drop(target,axis=1)
+    X=X.drop(append,axis =1)
     function_set = ['add', 'sub', 'mul', 'div',
                 'sqrt', 'log', 'abs', 'neg', 'inv',
                 'max', 'min','sin',
@@ -76,7 +79,7 @@ def Genetic_P(dataset,target):
     print('Number of features created out of genetic programing: {}'.format(gp_features.shape))
     n = pd.DataFrame(gp_features)
     n =n.set_index(dataset.index.values)
-    new_X = pd.concat([dataset,n],axis=1)
+    new_X = pd.concat([dataset, n],axis=1)
     new_X = new_X.dropna()
     return new_X
 
@@ -94,7 +97,7 @@ def relative_values(dataset, columns):
     dataset = dataset.replace([np.inf, -np.inf], np.nan).dropna()
     return dataset 
         
-def check_skewness(df, numerical_cols, p_threshold=0.75):
+def check_skewness(df, numerical_cols, p_threshold=(0.75)):
     skewed_features = list()
     for feature in numerical_cols:
         data = df[feature].copy()
@@ -127,22 +130,49 @@ def isDaylight(row):
     row['isNoon'] = 1 if row['hr'] == sun['noon'].hour else 0
     return row
 
-def isRushHour(row):
+def addRushHourFlags(row):
     #weekend
-    # if row['weekday'] in [0, 6]:
-        # row['isRushHour'] = 1
+    if row['workingday'] == 0 :
+        if row['hr'] in [10, 11, 12, 13, 14, 15, 16, 17, 18]:
+            row['RushHour-High'] = 1
+        elif row['hr'] in [8, 9, 19, 20, 21, 22, 23 ,0]:
+            row['RushHour-Med'] = 1
+        else:
+            row['RushHour-Low'] = 1
     #weekdays
-    if row['weekday'] in [0, 6]:
-        if row['hr'] in [6, 7, 8, 9, 16, 17, 18, 19]:
-            row['isRushHour'] = 1
+    if row['workingday'] == 1:
+        if row['hr'] in [7, 8,9, 16, 17, 18, 19, 20]:
+            row['RushHour-High'] = 1
+        elif row['hr'] in [6,  10, 11, 12, 13, 15 ,21 ,22 ,23]:
+            row['RushHour-Med'] = 1
+        else:
+            row['RushHour-Low'] = 1
     return row
 
 
-### This function will calculate the mean of the cnt of the previous 2 weeks during the same hour ( it is dropping 1 day per dataset)
-def mean_per_hour_2weeks(dataset):
+### This function will calculate the mean of the cnt of the previous 2 weeks during the same hour
+def mean_per_hour_3weeks(dataset):
     a = [] 
     for i in range(0,len(dataset)):
         a.append(dataset[ (dataset['dteday']>= (dataset['dteday'].iloc[i] + datetime.timedelta(-21))) & ( dataset['dteday'] < (dataset['dteday'].iloc[i])) &( dataset['hr']  == dataset['hr'].iloc[i])]['cnt'].mean())
     dataset['mean_per_hour']= a
     dataset= dataset.dropna()
     return dataset
+
+
+### THIS FUNCTION RETURNS THE PREDICTION FOR TRAIN and TEST IN STACKING
+def Stacking(model,train,fold,y,test):
+    folds=fold
+    test_pred=np.empty((test.shape[0],1),float)
+    train_pred=np.empty((0,1),float)
+    t = 0
+    for train_indices,val_indices in folds.split(train,y.values):
+     
+        x_train,x_val=train.iloc[train_indices],train.iloc[val_indices]
+        y_train,y_val=y.iloc[train_indices],y.iloc[val_indices]
+
+        model.fit(X=x_train,y=y_train)
+        train_pred=np.append(train_pred,model.predict(x_val))
+        print(model.score(x_val, y_val))
+        test_pred=model.predict(test)
+    return test_pred.reshape(-1,1),train_pred

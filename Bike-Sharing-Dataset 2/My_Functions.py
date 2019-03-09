@@ -58,9 +58,12 @@ def fix_types(df):
 
 ## Genetic programming function that will create new features
 def Genetic_P(dataset,target):
+    append = 'mean_per_hour'
+    a = dataset[append]
     y = dataset[target]
     X=dataset.copy()
     X=X.drop(target,axis=1)
+    X=X.drop(append,axis =1)
     function_set = ['add', 'sub', 'mul', 'div',
                 'sqrt', 'log', 'abs', 'neg', 'inv',
                 'max', 'min','sin',
@@ -76,7 +79,7 @@ def Genetic_P(dataset,target):
     print('Number of features created out of genetic programing: {}'.format(gp_features.shape))
     n = pd.DataFrame(gp_features)
     n =n.set_index(dataset.index.values)
-    new_X = pd.concat([dataset,n],axis=1)
+    new_X = pd.concat([dataset, n],axis=1)
     new_X = new_X.dropna()
     return new_X
 
@@ -129,18 +132,18 @@ def isDaylight(row):
 
 def addRushHourFlags(row):
     #weekend
-    if row['weekday'] in [0, 6]:
+    if row['workingday'] == 0 :
         if row['hr'] in [10, 11, 12, 13, 14, 15, 16, 17, 18]:
             row['RushHour-High'] = 1
-        elif row['hr'] in [8, 9, 19, 20]:
+        elif row['hr'] in [8, 9, 19, 20, 21, 22, 23 ,0]:
             row['RushHour-Med'] = 1
         else:
             row['RushHour-Low'] = 1
     #weekdays
-    if row['weekday'] in [1, 2, 3, 4, 5]:
-        if row['hr'] in [7, 8, 16, 17, 18, 19]:
+    if row['workingday'] == 1:
+        if row['hr'] in [7, 8,9, 16, 17, 18, 19, 20]:
             row['RushHour-High'] = 1
-        elif row['hr'] in [6, 9, 10, 11, 12, 13, 15, 20]:
+        elif row['hr'] in [6,  10, 11, 12, 13, 15 ,21 ,22 ,23]:
             row['RushHour-Med'] = 1
         else:
             row['RushHour-Low'] = 1
