@@ -158,21 +158,3 @@ def mean_per_hour_3weeks(dataset):
     dataset['mean_per_hour']= a
     dataset= dataset.dropna()
     return dataset
-
-
-### THIS FUNCTION RETURNS THE PREDICTION FOR TRAIN and TEST IN STACKING
-def Stacking(model,train,fold,y,test):
-    folds=fold
-    test_pred=np.empty((test.shape[0],1),float)
-    train_pred=np.empty((0,1),float)
-    t = 0
-    for train_indices,val_indices in folds.split(train,y.values):
-     
-        x_train,x_val=train.iloc[train_indices],train.iloc[val_indices]
-        y_train,y_val=y.iloc[train_indices],y.iloc[val_indices]
-
-        model.fit(X=x_train,y=y_train)
-        train_pred=np.append(train_pred,model.predict(x_val))
-        print(model.score(x_val, y_val))
-        test_pred=model.predict(test)
-    return test_pred.reshape(-1,1),train_pred
