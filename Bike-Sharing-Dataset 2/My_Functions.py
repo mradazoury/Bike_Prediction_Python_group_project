@@ -42,6 +42,8 @@ from gplearn.genetic import SymbolicTransformer
 from scipy.stats import *
 from astral import Astral
 import datetime
+import matplotlib.pyplot as plt
+from sklearn.metrics import explained_variance_score
 import warnings
 from sklearn import preprocessing
 from sklearn.metrics import mean_squared_error, r2_score,roc_curve
@@ -200,6 +202,10 @@ def addRushHourFlags(row):
             row['RushHour-Low'] = 1
     return row
 
+def r2score(x,y):
+    s = explained_variance_score(x,y)
+    return s 
+
 
 ### This function will calculate the mean of the cnt of the previous 2 weeks during the same hour
 def mean_per_hour_3weeks(dataset):
@@ -209,3 +215,4 @@ def mean_per_hour_3weeks(dataset):
     dataset['mean_per_hour']= a
     dataset= dataset.dropna()
     return dataset
+
