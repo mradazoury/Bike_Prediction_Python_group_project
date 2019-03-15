@@ -2,28 +2,6 @@
 
 Washington DC Biking data
 
-## Tasks
-
-Mrad:
-
-- genetic programming
-- relative temp DONE
-
-Hatem
-
-- Data exploration graphs polish DONE
-- Add sunny hours feature DONE
-- skewness and normaility DONE
-- Feature Engineering / Datasets to merge
-- graph and add 2 features for hours vs weekeends
-
-Furqan:
-
-- Model stacking for numerical models (In Progress)
-
-Unassigned:
-
-- Scale the coeff
 
 ## Libraries
 
@@ -32,6 +10,7 @@ Unassigned:
 - pep8
 - astral
 - plotly
+- xgboost
 
 
 Note: You can find updated env file is in the repo
@@ -39,3 +18,6 @@ Note: You can find updated env file is in the repo
 ## To install to environment
 
 `conda install --name intro_python seaborn`
+
+
+### Please note that the graphs can be seen in the HTML 
