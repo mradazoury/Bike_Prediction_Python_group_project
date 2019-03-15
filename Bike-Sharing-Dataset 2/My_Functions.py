@@ -45,6 +45,16 @@ import datetime
 import matplotlib.pyplot as plt
 from sklearn.metrics import explained_variance_score
 import warnings
+from sklearn import preprocessing
+from sklearn.metrics import mean_squared_error, r2_score,roc_curve
+from sklearn.model_selection import train_test_split, KFold,StratifiedKFold
+from sklearn.model_selection import cross_val_score, cross_val_predict,validation_curve
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.kernel_ridge import KernelRidge
+from sklearn.svm import SVR
+import xgboost as xgb
+from sklearn.linear_model import SGDRegressor
+
 plotly.tools.set_credentials_file(username='Furqan92', api_key='22DfVN5rFRg79OYygN5h')
 
 tscv = TimeSeriesSplit(n_splits=5)
