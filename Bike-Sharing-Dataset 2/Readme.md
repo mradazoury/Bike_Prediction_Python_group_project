@@ -1,3 +1,21 @@
+# HOW TO USE
+
+There is 3 Main Notebooks that contain all of the work:
+
+1. EDA + Baseline.ipynb/html
+2. Data Preparation (Feature Engineering).ipynb/html
+3. Modeling for weekdays.ipynb/html
+4- Modeling for weekends.ipynb/html  (This include the final predictions)
+
+
+The names are pretty self explanatory :)
+
+# Note:
+
+Most of the data cleaning functions are imported from the following .py files:
+
+My_Functions.py
+
 ==========================================
 Bike Sharing Dataset
 ==========================================
